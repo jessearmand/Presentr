@@ -247,10 +247,6 @@ extension PresentrController {
         containerView.insertSubview(backgroundView, at: 0)
         containerView.insertSubview(chromeView, at: 1)
 
-        if let customBackgroundView = customBackgroundView {
-            chromeView.addSubview(customBackgroundView)
-        }
-
         var blurEffectView: UIVisualEffectView?
         if visualEffect != nil {
             let view = UIVisualEffectView()
@@ -272,7 +268,13 @@ extension PresentrController {
             self.chromeView.alpha = 1.0
         }, completion: nil)
     }
-    
+
+    override func presentationTransitionDidEnd(_ completed: Bool) {
+        if let customBackgroundView = customBackgroundView {
+            chromeView.insertSubview(customBackgroundView, at: 0)
+        }
+    }
+
     override func dismissalTransitionWillBegin() {
         guard let coordinator = presentedViewController.transitionCoordinator else {
             chromeView.alpha = 0.0
